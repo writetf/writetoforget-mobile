@@ -3,6 +3,8 @@ import {SafeAreaView, View, StyleSheet} from 'react-native';
 import { Text } from '~/common/index';
 import globalStyles from '~/styles/globalStyle';
 
+import TextEditor from '~/container/TypePage/TextEditor/index';
+
 
 function App() {
     return (
@@ -11,6 +13,7 @@ function App() {
                 <Text weight='bold' style={styles.text}>
                     Write to forget
                 </Text>
+                <TextEditor />
             </View>
         </SafeAreaView>
     );
