@@ -4,15 +4,20 @@ import globalStyles, { deviceHeight } from '~/styles/globalStyle';
 import { Text } from '~/common/index';
 
 function TextEditor() {
+    const [value, setValue] = useState('');
     const [isEmpty, setIsEmpty] = useState(true);
     return (
         <View style={styles.textEditorContainer}>
             <TextInput
+                value={value}
+                autoFocus={true}
+                selectionColor={globalStyles.color.text}
                 multiline
                 autoCorrect={false}
                 numberOfLines={3}
                 onChange={e => {
                     setIsEmpty(e.nativeEvent.text.length === 0);
+                    setValue(e.nativeEvent.text);
                 }}
                 style={[
                     styles.textInput,
@@ -33,6 +38,8 @@ const styles = StyleSheet.create({
         height: deviceHeight / 3,
     },
     textInput: {
+        paddingBottom: 0,
+        color: globalStyles.color.text,
         display: 'flex',
         justifyContent: 'flex-end',
         fontFamily: 'Quicksand-Medium',
@@ -44,8 +51,9 @@ const styles = StyleSheet.create({
             position: 'absolute',
             ...globalStyles.fontSize.lg,
             color: globalStyles.color.gray500,
+            marginLeft: globalStyles.gap.sm,
             ...!isEmpty ? {
-                display: 'none',
+                opacity: 0,
             } : {},
         });
     },
