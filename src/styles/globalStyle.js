@@ -29,5 +29,6 @@ export default {
         darkPurple: 'hsl(264, 34%, 40%)',
         white: 'hsl(0, 0%, 100%)',
         gray500: 'hsl(0, 0%, 52%)',
+        text: 'hsl(0, 0%, 27%)',
     },
 };
