@@ -13,7 +13,10 @@ function TextEditor() {
                 autoFocus={true}
                 selectionColor={globalStyles.color.text}
                 multiline
+                autoCompleteType='off'
                 autoCorrect={false}
+                spellCheck={false}
+
                 numberOfLines={3}
                 onChange={e => {
                     setIsEmpty(e.nativeEvent.text.length === 0);
@@ -35,7 +38,7 @@ const styles = StyleSheet.create({
     textEditorContainer: {
         display: 'flex',
         flexDirection: 'column-reverse',
-        height: deviceHeight / 3,
+        height: deviceHeight / 3 - globalStyles.gap.lg,
     },
     textInput: {
         paddingBottom: 0,

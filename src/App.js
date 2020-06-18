@@ -3,9 +3,11 @@ import {SafeAreaView, View, StyleSheet} from 'react-native';
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
 import RecycleIcon from '~/common/WtfIcon/RecycleIcon';
+import SoundWaveIcon from '~/common/WtfIcon/SoundWaveIcon';
 import globalStyles from '~/styles/globalStyle';
 
 import TextEditor from '~/container/TypePage/TextEditor/index';
+import AudioPlayer from '~/container/TypePage/AudioPlayer';
 
 
 function App() {
@@ -27,10 +29,11 @@ function App() {
                     <TextEditor />
                 </View>
                 <View style={styles.footerContainer}>
-                    <Text>
-                        The footer
-                    </Text>
-                    <RecycleIcon color={globalStyles.color.darkPurple}/>
+                    <View style={styles.recycleContainer}>
+                        <RecycleIcon color={globalStyles.color.darkPurple}/>
+                        <Text style={styles.recycleText}>10</Text>
+                    </View>
+                    <AudioPlayer />
                 </View>
             </View>
         </SafeAreaView>
@@ -57,6 +60,17 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    recycleContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    recycleText: {
+        marginLeft: globalStyles.gap.sm,
+        ...globalStyles.fontSize.md,
+        color: globalStyles.color.darkPurple,
     },
     buttonText: {
         color: globalStyles.color.white,
