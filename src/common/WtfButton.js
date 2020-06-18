@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         top: isBeingPressed ? globalStyles.gap.xss : 0,
         left: 0,
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: globalStyles.color.lightPurple,

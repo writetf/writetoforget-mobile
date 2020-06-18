@@ -1,6 +1,8 @@
 import React from 'react';
 import {SafeAreaView, View, StyleSheet} from 'react-native';
 import { Text, Button } from '~/common/index';
+import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
+import RecycleIcon from '~/common/WtfIcon/RecycleIcon';
 import globalStyles from '~/styles/globalStyle';
 
 import TextEditor from '~/container/TypePage/TextEditor/index';
@@ -15,12 +17,21 @@ function App() {
                         Write to forget
                     </Text>
                     <Button width={108} height={40}>
+                        <DeleteIcon color={globalStyles.color.white} />
                         <Text weight='bold' style={styles.buttonText}>
                             Forget..
                         </Text>
                     </Button>
                 </View>
-                <TextEditor />
+                <View style={styles.bodyContainer}>
+                    <TextEditor />
+                </View>
+                <View style={styles.footerContainer}>
+                    <Text>
+                        The footer
+                    </Text>
+                    <RecycleIcon color={globalStyles.color.darkPurple}/>
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -29,11 +40,23 @@ function App() {
 const styles = StyleSheet.create({
     appContainer: {
         padding: globalStyles.gap.md,
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
     },
     headerContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    bodyContainer: {
+        flex: 1,
+    },
+    footerContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     buttonText: {
         color: globalStyles.color.white,
