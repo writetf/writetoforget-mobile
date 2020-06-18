@@ -24,7 +24,7 @@ function WtfButton({ children, width, height }) {
         </TouchableWithoutFeedback>
     );
 }
-
+const borderRadius = globalStyles.borderRadius;
 const styles = StyleSheet.create({
     buttonContainer: ({ width, height }) => ({
         position: 'relative',
@@ -33,20 +33,20 @@ const styles = StyleSheet.create({
     }),
     primaryContainer: ({ width, height, isBeingPressed }) => ({
         position: 'absolute',
-        top: isBeingPressed ? 2 : 0,
+        top: isBeingPressed ? globalStyles.gap.xss : 0,
         left: 0,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: globalStyles.color.lightPurple,
-        borderRadius: 4,
+        borderRadius,
         width,
         height,
     }),
     rearShadow: ({ width, height }) => ({
         position: 'absolute',
-        borderRadius: 4,
-        top: 4,
+        borderRadius,
+        top: globalStyles.gap.xs,
         left: 0,
         backgroundColor: globalStyles.color.darkPurple,
         width,

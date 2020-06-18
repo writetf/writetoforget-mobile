@@ -20,10 +20,13 @@ export default {
         },
     },
     gap: {
+        xss: 2,
+        xs: 4,
         sm: 8,
         md: 16,
         lg: 32,
     },
+    borderRadius: 4,
     color: {
         lightPurple: 'hsl(264, 45%, 50%)',
         darkPurple: 'hsl(264, 34%, 40%)',
