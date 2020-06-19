@@ -3,7 +3,7 @@ import {SafeAreaView, View, StyleSheet} from 'react-native';
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
 import RecycleIcon from '~/common/WtfIcon/RecycleIcon';
-import SoundWaveIcon from '~/common/WtfIcon/SoundWaveIcon';
+import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
 import globalStyles from '~/styles/globalStyle';
 
 import TextEditor from '~/container/TypePage/TextEditor/index';
@@ -15,9 +15,13 @@ function App() {
         <SafeAreaView flex={1}>
             <View style={styles.appContainer}>
                 <View style={styles.headerContainer}>
-                    <Text weight='bold' style={styles.text}>
-                        Write to forget
-                    </Text>
+                    {/* <Logo /> */}
+                    <View style={styles.credContainer}>
+                        <AnonymousIcon color={globalStyles.color.gray500} />
+                        <Text weight='bold' style={styles.credText}>
+                            Anonymous
+                        </Text>
+                    </View>
                     <Button width={108} height={40}>
                         <DeleteIcon color={globalStyles.color.white} />
                         <Text weight='bold' style={styles.buttonText}>
@@ -46,6 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         justifyContent: 'space-between',
+        // backgroundColor: '#ffe5cb',
     },
     headerContainer: {
         display: 'flex',
@@ -76,9 +81,16 @@ const styles = StyleSheet.create({
         color: globalStyles.color.white,
         ...globalStyles.fontSize.md,
     },
-    text: {
-        ...globalStyles.fontSize.lg,
-        color: globalStyles.color.darkPurple,
+    credText: {
+        ...globalStyles.fontSize.md,
+        color: globalStyles.color.gray500,
+        marginLeft: globalStyles.gap.sm,
+    },
+    credContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 
