@@ -19,7 +19,7 @@ function TextEditor({
             inputRef.current.blur();
             setTimeout(() => {
                 inputRef.current.focus();
-            }, 100);
+            }, 0);
         }}>
         <View style={styles.textEditorContainer}>
             <TextInput
