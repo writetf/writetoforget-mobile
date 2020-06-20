@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import {SafeAreaView, View, StyleSheet} from 'react-native';
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
@@ -11,6 +11,8 @@ import AudioPlayer from '~/container/TypePage/AudioPlayer';
 
 
 function App() {
+    const [contentToForget, setContentToForget] = useState('');
+    const inputRef = useRef(null);
     return (
         <SafeAreaView flex={1}>
             <View style={styles.appContainer}>
@@ -22,7 +24,14 @@ function App() {
                             Anonymous
                         </Text>
                     </View>
-                    <Button width={108} height={40}>
+                    <Button
+                        onPress={() => {
+                            setContentToForget('');
+                            inputRef.current.blur();
+                        }}
+                        width={108}
+                        height={40}
+                    >
                         <DeleteIcon color={globalStyles.color.white} />
                         <Text weight='bold' style={styles.buttonText}>
                             Forget..
@@ -30,15 +39,15 @@ function App() {
                     </Button>
                 </View>
                 <View style={styles.bodyContainer}>
-                    <TextEditor />
+                    <TextEditor inputRef={inputRef} value={contentToForget} setValue={setContentToForget} />
                 </View>
-                <View style={styles.footerContainer}>
+                {/* <View style={styles.footerContainer}>
                     <View style={styles.recycleContainer}>
                         <RecycleIcon color={globalStyles.color.darkPurple}/>
                         <Text style={styles.recycleText}>10</Text>
                     </View>
                     <AudioPlayer />
-                </View>
+                </View> */}
             </View>
         </SafeAreaView>
     );

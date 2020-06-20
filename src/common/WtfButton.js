@@ -3,10 +3,11 @@ import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 
 import globalStyles from '~/styles/globalStyle';
 
-function WtfButton({ children, width, height }) {
+function WtfButton({ children, width, height, onPress }) {
     const [isBeingPressed, setIsBeingPressed] = React.useState(false);
     return (
         <TouchableWithoutFeedback
+            onPress={onPress}
             onPressIn={
                 () => setIsBeingPressed(true)
             }

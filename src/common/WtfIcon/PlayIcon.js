@@ -1,21 +1,35 @@
 import React from 'react';
-import Svg, {
-    Path,
-} from 'react-native-svg';
+import Svg, { Use, Path, Defs } from 'react-native-svg';
 
-function PlayIcon({
-    color,
+function Icon({
+  color,
+  width = 24,
+  height = 24,
 }) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 512 512"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width={width}
+      height={height}
+      viewBox="0 0 640 640"
+      fill={color}
     >
-      <Path fill={color} d="M133 440a35.37 35.37 0 01-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0135.77.45l247.85 148.36a36 36 0 010 61l-247.89 148.4A35.5 35.5 0 01133 440z" />
+      <Defs>
+        <Path
+          id="c78KZaeOzD"
+          d="M177.04 524.67c-13.7-7.76-22.21-22.83-22.21-39.18V154.51c0-16.4 8.51-31.42 22.21-39.18a40.074 40.074 0 0140.82.52c28.29 16.93 254.59 152.39 282.87 169.32 19.23 12.05 25.04 37.41 12.99 56.64-3.3 5.25-7.73 9.68-12.99 12.98-28.29 16.93-254.62 152.43-282.91 169.37a40.594 40.594 0 01-20.81 5.84 40.313 40.313 0 01-19.97-5.33z"
+        />
+      </Defs>
+      <Use xlinkHref="#c78KZaeOzD" />
+      <Use
+        fillOpacity="0"
+        stroke="#000"
+        strokeOpacity="0"
+        xlinkHref="#c78KZaeOzD"
+      />
     </Svg>
   );
 }
 
-export default PlayIcon;
+export default Icon;

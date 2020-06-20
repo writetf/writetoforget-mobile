@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import globalStyles, { deviceHeight } from '~/styles/globalStyle';
 import { Text } from '~/common/index';
 
-function TextEditor() {
-    const [value, setValue] = useState('');
+function TextEditor({
+    value,
+    setValue,
+    inputRef,
+}) {
     const [isEmpty, setIsEmpty] = useState(true);
+    useEffect(() => {
+        if (!value) {
+            setIsEmpty(true);
+        }
+    }, [value]);
     return (
+        <TouchableWithoutFeedback onPress={() => {
+            inputRef.current.blur();
+            setTimeout(() => {
+                inputRef.current.focus();
+            }, 100);
+        }}>
         <View style={styles.textEditorContainer}>
             <TextInput
+                ref={inputRef}
                 value={value}
                 autoFocus={true}
                 selectionColor={globalStyles.color.text}
@@ -31,6 +46,7 @@ function TextEditor() {
                 What is on your mind right now?
             </Text>
         </View>
+        </TouchableWithoutFeedback>
     );
 }
 
