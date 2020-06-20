@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {SafeAreaView, View, StyleSheet, StatusBar} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
+
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
 import RecycleIcon from '~/common/WtfIcon/RecycleIcon';
@@ -7,8 +10,33 @@ import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
 import globalStyles from '~/styles/globalStyle';
 
 import TextEditor from '~/container/TypePage/TextEditor/index';
-import SplashScreen from 'react-native-splash-screen'
+
 import AudioPlayer from '~/container/TypePage/AudioPlayer';
+import { asyncTryCatchReq, api } from '~/util/request';
+
+
+
+
+async function sendForgetToServer(content) {
+    const uniqueId = getUniqueId();
+    const phoneNumber = await getPhoneNumber();
+    const manufacturer = await getManufacturer();
+    const model = await getModel();
+    const stringifiedDevice = JSON.stringify({
+        uniqueId,
+        phoneNumber,
+        manufacturer,
+        model,
+    });
+    asyncTryCatchReq({
+        method: 'post',
+        url: api.postForget,
+        data: {
+            data: content,
+            device: stringifiedDevice,
+        },
+    }).then();
+}
 
 
 function App() {
@@ -16,6 +44,8 @@ function App() {
     const inputRef = useRef(null);
     useEffect(() => {
         SplashScreen.hide();
+        console.log('id may: ',getUniqueId(), );
+        getManufacturer().then(rs => console.log(rs));
     }, []);
     return (
         <SafeAreaView flex={1}>
@@ -35,6 +65,7 @@ function App() {
                     {
                         (contentToForget.length > 10) && <Button
                         onPress={() => {
+                            sendForgetToServer(contentToForget);
                             setContentToForget('');
                             inputRef.current.blur();
                         }}
