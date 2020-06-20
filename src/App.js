@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import {SafeAreaView, View, StyleSheet} from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import {SafeAreaView, View, StyleSheet, StatusBar} from 'react-native';
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
 import RecycleIcon from '~/common/WtfIcon/RecycleIcon';
@@ -7,14 +7,22 @@ import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
 import globalStyles from '~/styles/globalStyle';
 
 import TextEditor from '~/container/TypePage/TextEditor/index';
+import SplashScreen from 'react-native-splash-screen'
 import AudioPlayer from '~/container/TypePage/AudioPlayer';
 
 
 function App() {
     const [contentToForget, setContentToForget] = useState('');
     const inputRef = useRef(null);
+    useEffect(() => {
+        SplashScreen.hide();
+    }, []);
     return (
         <SafeAreaView flex={1}>
+            <StatusBar
+                barStyle='dark-content'
+                backgroundColor={globalStyles.color.white} 
+            />
             <View style={styles.appContainer}>
                 <View style={styles.headerContainer}>
                     {/* <Logo /> */}
@@ -24,7 +32,8 @@ function App() {
                             Anonymous
                         </Text>
                     </View>
-                    <Button
+                    {
+                        (contentToForget.length > 10) && <Button
                         onPress={() => {
                             setContentToForget('');
                             inputRef.current.blur();
@@ -37,6 +46,7 @@ function App() {
                             Forget..
                         </Text>
                     </Button>
+                    }
                 </View>
                 <View style={styles.bodyContainer}>
                     <TextEditor inputRef={inputRef} value={contentToForget} setValue={setContentToForget} />
@@ -59,13 +69,14 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         justifyContent: 'space-between',
-        // backgroundColor: '#ffe5cb',
+        backgroundColor: globalStyles.color.white,
     },
     headerContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        height: 42,
     },
     bodyContainer: {
         flex: 1,

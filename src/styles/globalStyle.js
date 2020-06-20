@@ -30,7 +30,7 @@ export default {
     color: {
         lightPurple: 'hsl(264, 45%, 50%)',
         darkPurple: 'hsl(264, 34%, 40%)',
-        white: 'hsl(0, 0%, 100%)',
+        white: 'hsl(0, 0%, 90%)',
         gray500: 'hsl(0, 0%, 52%)',
         text: 'hsl(0, 0%, 27%)',
     },
