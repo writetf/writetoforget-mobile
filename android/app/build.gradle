@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.writetoforget"
+        applicationId "com.writetf.writetoforget"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

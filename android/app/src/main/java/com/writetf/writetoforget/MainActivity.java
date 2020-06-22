@@ -1,4 +1,4 @@
-package com.writetoforget;
+package com.writetf.writetoforget;
 import android.os.Bundle; // here
 import org.devio.rn.splashscreen.SplashScreen;
 
