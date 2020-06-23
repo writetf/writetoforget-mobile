@@ -82,13 +82,13 @@ function App() {
                 <View style={styles.bodyContainer}>
                     <TextEditor inputRef={inputRef} value={contentToForget} setValue={setContentToForget} />
                 </View>
-                {/* <View style={styles.footerContainer}>
+                <View style={styles.footerContainer}>
                     <View style={styles.recycleContainer}>
                         <RecycleIcon color={globalStyles.color.darkPurple}/>
                         <Text style={styles.recycleText}>10</Text>
                     </View>
                     <AudioPlayer />
-                </View> */}
+                </View>
             </View>
         </SafeAreaView>
     );
