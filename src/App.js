@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {SafeAreaView, View, StyleSheet, StatusBar} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
@@ -41,11 +42,15 @@ async function sendForgetToServer(content) {
 
 function App() {
     const [contentToForget, setContentToForget] = useState('');
+    const [postNumber, setPostNumber] = useState(0);
     const inputRef = useRef(null);
     useEffect(() => {
         SplashScreen.hide();
-        console.log('id may: ',getUniqueId(), );
-        getManufacturer().then(rs => console.log(rs));
+        AsyncStorage.getItem('@storage_post_number').then(storagePostNumber => {
+            if (storagePostNumber) {
+                setPostNumber(Number(storagePostNumber));
+            }
+        });
     }, []);
     return (
         <SafeAreaView flex={1}>
@@ -64,8 +69,10 @@ function App() {
                     </View>
                     {
                         (contentToForget.length > 10) && <Button
-                        onPress={() => {
+                        onPress={async () => {
                             sendForgetToServer(contentToForget);
+                            setPostNumber(postNumber + 1);
+                            AsyncStorage.setItem('@storage_post_number', (postNumber + 1).toString());
                             setContentToForget('');
                             inputRef.current.blur();
                         }}
@@ -85,7 +92,7 @@ function App() {
                 <View style={styles.footerContainer}>
                     <View style={styles.recycleContainer}>
                         <RecycleIcon color={globalStyles.color.darkPurple}/>
-                        <Text style={styles.recycleText}>10</Text>
+                        <Text style={styles.recycleText}>{postNumber}</Text>
                     </View>
                     <AudioPlayer />
                 </View>
