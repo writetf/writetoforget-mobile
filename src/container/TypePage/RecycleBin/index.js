@@ -18,6 +18,8 @@ function RecycleBin({
     );
 }
 
+
+
 const styles = StyleSheet.create({
     footerContainer: {
         display: 'flex',

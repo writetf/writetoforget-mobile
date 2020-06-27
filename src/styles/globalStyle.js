@@ -33,5 +33,6 @@ export default {
         white: 'hsl(0, 0%, 90%)',
         gray500: 'hsl(0, 0%, 52%)',
         text: 'hsl(0, 0%, 27%)',
+        yellow: 'hsl(48, 94%, 64%)',
     },
 };
