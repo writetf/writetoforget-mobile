@@ -1,19 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {SafeAreaView, View, StyleSheet, StatusBar} from 'react-native';
+import { View, StyleSheet, StatusBar} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
-import RecycleIcon from '~/common/WtfIcon/RecycleIcon';
 import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
 import globalStyles from '~/styles/globalStyle';
 
-import TextEditor from '~/container/TypePage/TextEditor/index';
-
-import AudioPlayer from '~/container/TypePage/AudioPlayer';
 import { asyncTryCatchReq, api } from '~/util/request';
+import TextEditor from './TextEditor/index';
+import AudioPlayer from './AudioPlayer';
+import RecycleBin from './RecycleBin';
 
 async function sendForgetToServer(content) {
     const uniqueId = getUniqueId();
@@ -46,7 +45,9 @@ function parsePostsFromLocalStorage() {
     });
 }
 
-function TypePage() {
+function TypePage({
+    navigation,
+}) {
     const [contentToForget, setContentToForget] = useState('');
     const [postNumber, setPostNumber] = useState(0);
     const [posts, setPosts] = useState([]);
@@ -73,7 +74,6 @@ function TypePage() {
             backgroundColor={globalStyles.color.white}
         />
         <View style={styles.headerContainer}>
-            {/* <Logo /> */}
             <View style={styles.credContainer}>
                 <AnonymousIcon color={globalStyles.color.gray500} />
                 <Text weight='bold' style={styles.credText}>
@@ -114,10 +114,10 @@ function TypePage() {
             <TextEditor inputRef={inputRef} value={contentToForget} setValue={setContentToForget} />
         </View>
         <View style={styles.footerContainer}>
-            <View style={styles.recycleContainer}>
-                <RecycleIcon color={globalStyles.color.darkPurple}/>
-                <Text style={styles.recycleText}>{postNumber}</Text>
-            </View>
+            <RecycleBin
+                postNumber={postNumber} 
+                onPress={() => navigation.navigate('Stateful')}
+            />
             <AudioPlayer />
         </View>
     </View>
@@ -147,16 +147,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-    },
-    recycleContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    recycleText: {
-        marginLeft: globalStyles.gap.sm,
-        ...globalStyles.fontSize.md,
-        color: globalStyles.color.darkPurple,
     },
     buttonText: {
         color: globalStyles.color.white,
