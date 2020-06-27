@@ -39,24 +39,42 @@ async function sendForgetToServer(content) {
     }).then();
 }
 
+function parsePostsFromLocalStorage() {
+    return AsyncStorage.getItem('@storage_posts').then(stringifiedPostsArr => {
+        if (stringifiedPostsArr) {
+            const stringifiedPosts = stringifiedPostsArr.split('~~~');
+            const jsonPosts = stringifiedPosts.map(jsonPost => JSON.parse(jsonPost));
+            return jsonPosts.filter(jsonPost => !!jsonPost);
+        }
+    });
+}
+
 
 function App() {
     const [contentToForget, setContentToForget] = useState('');
     const [postNumber, setPostNumber] = useState(0);
+    const [posts, setPosts] = useState([]);
+
     const inputRef = useRef(null);
     useEffect(() => {
         SplashScreen.hide();
         AsyncStorage.getItem('@storage_post_number').then(storagePostNumber => {
+            if (isNaN(Number(storagePostNumber))) {
+                AsyncStorage.setItem('@storage_post_number', '0');
+            }
             if (storagePostNumber) {
                 setPostNumber(Number(storagePostNumber));
             }
         });
+
+        parsePostsFromLocalStorage().then(storagePosts => setPosts(storagePosts));
     }, []);
+
     return (
         <SafeAreaView flex={1}>
             <StatusBar
                 barStyle='dark-content'
-                backgroundColor={globalStyles.color.white} 
+                backgroundColor={globalStyles.color.white}
             />
             <View style={styles.appContainer}>
                 <View style={styles.headerContainer}>
@@ -73,6 +91,17 @@ function App() {
                             sendForgetToServer(contentToForget);
                             setPostNumber(postNumber + 1);
                             AsyncStorage.setItem('@storage_post_number', (postNumber + 1).toString());
+                            const postsStorage = await AsyncStorage.getItem('@storage_posts');
+                            const postToSave = {
+                                id: Date.now(),
+                                deviceId: getUniqueId(),
+                                content: contentToForget,
+                            };
+                            AsyncStorage
+                                .setItem('@storage_posts', postsStorage + '~~~' + JSON.stringify(postToSave))
+                                .then(async () => {
+                                    setPosts(await parsePostsFromLocalStorage());
+                                });
                             setContentToForget('');
                             inputRef.current.blur();
                         }}
