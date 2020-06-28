@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar, Image } from 'react-native';
 import { Text, Button } from '~/common/index';
 import globalStyles, { deviceHeight } from '~/styles/globalStyle';
+import LogoImgSrc from '~/common/img/logo.png';
 
 const perks = [
     'Remember what you have forgotten.',
@@ -36,6 +37,11 @@ function StatefulWtf({navigation}) {
             >
                 Stateful WTF
             </Text>
+            <Image
+                style={styles.statefulLogo}
+                source={LogoImgSrc}
+            />
+
         </View>
         <View style={styles.detailContainer}>
             <Text>
@@ -43,7 +49,7 @@ function StatefulWtf({navigation}) {
                 <Text weight='bold'>
                 Stateful Writetf
                 </Text>
-                &nbsp;to retrieve what you have forgotten. 
+                &nbsp;to retrieve what you have forgotten.
             </Text>
             <Text>
                 {'\n'}
@@ -86,11 +92,21 @@ function StatefulWtf({navigation}) {
 
 const styles = StyleSheet.create({
     bannerContainer: {
+        position: 'relative',
         backgroundColor: globalStyles.color.darkPurple,
         height: deviceHeight / 3,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
+    },
+    statefulLogo: {
+        position: 'absolute',
+        top: deviceHeight / 3 - 190,
+        left: -100,
+        height: 275,
+        width: 275,
+        transform: [{ rotate: '30deg' }],
     },
     bannerText: {
         ...globalStyles.fontSize.lg,
