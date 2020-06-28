@@ -31,6 +31,11 @@ function AudioPlayer() {
               });
             setPlayback(backgroundMusic);
         });
+        return () => {
+            if (backgroundMusic) {
+                backgroundMusic.stop();
+            }
+        };
     }, []);
 
     return (

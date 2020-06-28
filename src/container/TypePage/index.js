@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, StatusBar} from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
 import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -50,11 +49,9 @@ function TypePage({
 }) {
     const [contentToForget, setContentToForget] = useState('');
     const [postNumber, setPostNumber] = useState(0);
-    const [posts, setPosts] = useState([]);
 
     const inputRef = useRef(null);
     useEffect(() => {
-        SplashScreen.hide();
         AsyncStorage.getItem('@storage_post_number').then(storagePostNumber => {
             if (isNaN(Number(storagePostNumber))) {
                 AsyncStorage.setItem('@storage_post_number', '0');
@@ -64,7 +61,7 @@ function TypePage({
             }
         });
 
-        parsePostsFromLocalStorage().then(storagePosts => setPosts(storagePosts));
+        parsePostsFromLocalStorage().then();
     }, []);
 
     return (
@@ -90,13 +87,11 @@ function TypePage({
                     const postToSave = {
                         id: Date.now(),
                         deviceId: getUniqueId(),
-                        content: contentToForget,
+                        content: contentToForget.trim(),
                     };
                     AsyncStorage
                         .setItem('@storage_posts', postsStorage + '~~~' + JSON.stringify(postToSave))
-                        .then(async () => {
-                            setPosts(await parsePostsFromLocalStorage());
-                        });
+                        .then();
                     setContentToForget('');
                     inputRef.current.blur();
                 }}
@@ -115,7 +110,7 @@ function TypePage({
         </View>
         <View style={styles.footerContainer}>
             <RecycleBin
-                postNumber={postNumber} 
+                postNumber={postNumber}
                 onPress={() => navigation.navigate('Stateful')}
             />
             <AudioPlayer />

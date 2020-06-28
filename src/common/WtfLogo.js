@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import LogoImageSource from './img/logo.png';
 import globalStyle from '~/styles/globalStyle';
 
-function WtfLogo() {
+function WtfLogo({
+    onPress,
+}) {
     return (
-        <View style={styles.logoContainer}>
-            <Image
-                style={styles.logoImage}
-                source={LogoImageSource}
-            />
-        </View>
+        <TouchableWithoutFeedback onPress={onPress}>
+            <View style={styles.logoContainer}>
+                <Image
+                    style={styles.logoImage}
+                    source={LogoImageSource}
+                />
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 

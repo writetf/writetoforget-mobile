@@ -18,7 +18,7 @@ function renderBulletinPoint(content) {
     </View>;
 }
 
-function StatefulWtf() {
+function StatefulWtf({navigation}) {
     return (
     <View
         flex={1}
@@ -64,19 +64,19 @@ function StatefulWtf() {
                 Subscription
             </Text>
             <View style={styles.pricingContainer}>
-                <Button width={147} height={40}>
+                <Button onPress={() => navigation.navigate('Trash')} width={147} height={40}>
                     <Text
                         style={styles.pricingText}
                     >
                         ₫ 19,000 / Month
                     </Text>
                 </Button>
-                <Button width={147} height={40}>
-                <Text
-                    style={styles.pricingText}
-                >
-                ₫ 190,000 / Year
-                </Text>
+                <Button onPress={() => navigation.navigate('Trash')} width={147} height={40}>
+                    <Text
+                        style={styles.pricingText}
+                    >
+                    ₫ 190,000 / Year
+                    </Text>
                 </Button>
             </View>
         </View>
