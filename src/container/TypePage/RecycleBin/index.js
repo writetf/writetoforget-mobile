@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     recycleText: {
-        marginLeft: globalStyles.gap.sm,
+        marginLeft: globalStyles.gap.xs,
         ...globalStyles.fontSize.md,
         color: globalStyles.color.darkPurple,
     },

@@ -20,7 +20,6 @@ function renderBulletinPoint(content) {
     </View>;
 }
 
-const productId = 'one_month_subscription';
 
 const defaultState = {
     productDetails: null,
@@ -31,7 +30,7 @@ const defaultState = {
 
 function StatefulWtf({navigation}) {
     const [billingState, setBillingState] = useState(defaultState);
-    const getSubscriptionDetails = async () => {
+    const buySubscription = async (productId) => {
         try {
           await InAppBilling.open();
           const details = await InAppBilling.subscribe(
@@ -44,7 +43,6 @@ function StatefulWtf({navigation}) {
               productDetails: JSON.stringify(details),
             });
         } catch (err) {
-            console.log(productId);
             console.log(err);
             setBillingState({
                 ...defaultState,
@@ -54,76 +52,81 @@ function StatefulWtf({navigation}) {
         }
       };
 
+
     return (
-    <View
-        flex={1}
-    >
-        <StatusBar
-            barStyle='light-content'
-            backgroundColor={globalStyles.color.darkPurple}
-        />
         <View
-            style={styles.bannerContainer}
+            flex={1}
         >
-            <Text
-                style={styles.bannerText}
-                weight='bold'
-            >
-                Stateful WTF
-            </Text>
-            <Image
-                style={styles.statefulLogo}
-                source={LogoImgSrc}
+            <StatusBar
+                barStyle='light-content'
+                backgroundColor={globalStyles.color.darkPurple}
             />
-
-        </View>
-        <View style={styles.detailContainer}>
-            <Text>
-                Upgrade to&nbsp;
-                <Text weight='bold'>
-                Stateful Writetf
-                </Text>
-                &nbsp;to retrieve what you have forgotten.
-            </Text>
-            <Text>
-                {'\n'}
-                With&nbsp;
-                <Text weight='bold'>
-                Stateful Writetf
-                </Text>
-                &nbsp;, you can:
-            </Text>
-            {
-                perks.map(perk => renderBulletinPoint(perk))
-            }
-            <Text
-                style={styles.subscriptionText}
-                weight='bold'
+            <View
+                style={styles.bannerContainer}
             >
-                {'\n'}
-                Subscription
-            </Text>
-            <View style={styles.pricingContainer}>
-                <Button onPress={() => {
-                    getSubscriptionDetails();
-                }} width={147} height={40}>
-                    <Text
-                        style={styles.pricingText}
-                    >
-                        ₫ 19,000 / Month
-                    </Text>
-                </Button>
-                <Button onPress={() => navigation.navigate('Trash')} width={147} height={40}>
-                    <Text
-                        style={styles.pricingText}
-                    >
-                    ₫ 190,000 / Year
-                    </Text>
-                </Button>
-            </View>
-        </View>
+                <Text
+                    style={styles.bannerText}
+                    weight='bold'
+                >
+                    Stateful WTF
+                </Text>
+                <Image
+                    style={styles.statefulLogo}
+                    source={LogoImgSrc}
+                />
 
-    </View>);
+            </View>
+            <View style={styles.detailContainer}>
+                <Text>
+                    Upgrade to&nbsp;
+                    <Text weight='bold'>
+                    Stateful Writetf
+                    </Text>
+                    &nbsp;to retrieve what you have forgotten.
+                </Text>
+                <Text>
+                    {'\n'}
+                    With&nbsp;
+                    <Text weight='bold'>
+                    Stateful Writetf
+                    </Text>
+                    &nbsp;, you can:
+                </Text>
+                {
+                    perks.map(perk => renderBulletinPoint(perk))
+                }
+                <Text
+                    style={styles.subscriptionText}
+                    weight='bold'
+                >
+                    {'\n'}
+                    Subscription
+                </Text>
+                <View style={styles.pricingContainer}>
+                    <Button onPress={() => {
+                        buySubscription('one_month_subscription');
+                    }} width={147} height={40}>
+                        <Text
+                            style={styles.pricingText}
+                        >
+                            ₫ 19,000 / Month
+                        </Text>
+                    </Button>
+                    <Button 
+                        onPress={() => buySubscription('one_year_subscription')} 
+                        width={147} 
+                        height={40}
+                    >
+                        <Text
+                            style={styles.pricingText}
+                        >
+                        ₫ 190,000 / Year
+                        </Text>
+                    </Button>
+                </View>
+            </View>
+
+        </View>);
 }
 
 const styles = StyleSheet.create({

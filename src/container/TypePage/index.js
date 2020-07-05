@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, StatusBar} from 'react-native';
 import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
 import AsyncStorage from '@react-native-community/async-storage';
+import InAppBilling from 'react-native-billing';
 
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
 import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
 import globalStyles from '~/styles/globalStyle';
 
+import checkIsSubscribed from '~/util/checkIsSubscribed';
 import { asyncTryCatchReq, api } from '~/util/request';
 import TextEditor from './TextEditor/index';
 import AudioPlayer from './AudioPlayer';
@@ -111,7 +113,14 @@ function TypePage({
         <View style={styles.footerContainer}>
             <RecycleBin
                 postNumber={postNumber}
-                onPress={() => navigation.navigate('Stateful')}
+                onPress={async () => {
+                    const isSubscribed = await checkIsSubscribed();
+                    if (!isSubscribed) {
+                        navigation.navigate('Stateful');
+                    } else {
+                        navigation.navigate('Trash');
+                    }
+                }}
             />
             <AudioPlayer />
         </View>

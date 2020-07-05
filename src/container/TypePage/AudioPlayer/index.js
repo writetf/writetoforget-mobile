@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     trackText: (playerColor) => ({
-        ...globalStyles.fontSize.sm,
-        marginHorizontal: globalStyles.gap.sm,
+        ...globalStyles.fontSize.md,
+        marginHorizontal: globalStyles.gap.xs,
         color: playerColor,
     }),
 });

@@ -22,7 +22,11 @@ function TrashThought({
 }) {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
-        parsePostsFromLocalStorage().then(storagePosts => setPosts(storagePosts));
+        parsePostsFromLocalStorage().then(storagePosts => {
+            if (storagePosts) {
+                setPosts(storagePosts);
+            }
+        });
     }, []);
     return (
         <View style={styles.trashThoughtContainer} flex={1}>
@@ -40,11 +44,16 @@ function TrashThought({
                     barStyle='dark-content'
                     backgroundColor={globalStyles.color.white}
                 />
-                {posts.map(post => {
-                    return (
-                        renderPost(post)
-                    );
-                })}
+                { posts.length !== 0 ?
+                    posts.map(post => {
+                        return (
+                            renderPost(post)
+                        );
+                    }) :
+                    <Text>
+                        No posts yet!
+                    </Text>
+                }
 
             </ScrollView>
 
