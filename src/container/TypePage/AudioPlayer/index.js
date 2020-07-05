@@ -52,9 +52,9 @@ function AudioPlayer() {
         >
             <View style={styles.audioPlayerContainer}>
                 {
-                    playing ? <PlayIcon
+                    playing ? <PauseIcon
                     color={playerColor}
-                    /> : <PauseIcon
+                    /> : <PlayIcon
                         color={playerColor}
                     />
                 }
