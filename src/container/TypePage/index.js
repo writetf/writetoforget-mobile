@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, StatusBar} from 'react-native';
-import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
+import { View, StatusBar} from 'react-native';
+import { getUniqueId } from 'react-native-device-info';
 import AsyncStorage from '@react-native-community/async-storage';
 import CryptoJS from 'react-native-crypto-js';
 
@@ -10,31 +10,13 @@ import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
 import globalStyles from '~/styles/globalStyle';
 
 import checkIsSubscribed from '~/util/checkIsSubscribed';
-import { asyncTryCatchReq, api } from '~/util/request';
 import TextEditor from './TextEditor/index';
 import AudioPlayer from './AudioPlayer';
 import RecycleBin from './RecycleBin';
+import styles from './styles';
+import { sendForgetToServer } from './services';
 
-async function sendForgetToServer(content) {
-    const uniqueId = getUniqueId();
-    const phoneNumber = await getPhoneNumber();
-    const manufacturer = await getManufacturer();
-    const model = await getModel();
-    const stringifiedDevice = JSON.stringify({
-        uniqueId,
-        phoneNumber,
-        manufacturer,
-        model,
-    });
-    asyncTryCatchReq({
-        method: 'post',
-        url: api.postForget,
-        data: {
-            data: content,
-            device: stringifiedDevice,
-        },
-    }).then();
-}
+
 
 function parsePostsFromLocalStorage() {
     return AsyncStorage.getItem('@storage_posts').then(stringifiedPostsArr => {
@@ -66,6 +48,23 @@ function TypePage({
         parsePostsFromLocalStorage().then();
     }, []);
 
+    async function handleForgetButton() {
+        sendForgetToServer(CryptoJS.MD5(contentToForget).toString());
+        setPostNumber(postNumber + 1);
+        AsyncStorage.setItem('@storage_post_number', (postNumber + 1).toString());
+        const postsStorage = await AsyncStorage.getItem('@storage_posts');
+        const postToSave = {
+            id: Date.now(),
+            deviceId: getUniqueId(),
+            content: contentToForget.trim(),
+        };
+        AsyncStorage
+            .setItem('@storage_posts', postsStorage + '~~~' + JSON.stringify(postToSave))
+            .then();
+        setContentToForget('');
+        inputRef.current.blur();
+    }
+
     return (
     <View style={styles.appContainer}>
         <StatusBar
@@ -81,22 +80,7 @@ function TypePage({
             </View>
             {
                 (contentToForget.length > 10) && <Button
-                onPress={async () => {
-                    sendForgetToServer(CryptoJS.MD5(contentToForget).toString());
-                    setPostNumber(postNumber + 1);
-                    AsyncStorage.setItem('@storage_post_number', (postNumber + 1).toString());
-                    const postsStorage = await AsyncStorage.getItem('@storage_posts');
-                    const postToSave = {
-                        id: Date.now(),
-                        deviceId: getUniqueId(),
-                        content: contentToForget.trim(),
-                    };
-                    AsyncStorage
-                        .setItem('@storage_posts', postsStorage + '~~~' + JSON.stringify(postToSave))
-                        .then();
-                    setContentToForget('');
-                    inputRef.current.blur();
-                }}
+                onPress={handleForgetButton}
                 width={108}
                 height={40}
             >
@@ -127,46 +111,5 @@ function TypePage({
     </View>
     );
 }
-
-const styles = StyleSheet.create({
-    appContainer: {
-        padding: globalStyles.gap.md,
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'space-between',
-        backgroundColor: globalStyles.color.white,
-    },
-    headerContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 42,
-    },
-    bodyContainer: {
-        flex: 1,
-    },
-    footerContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    buttonText: {
-        color: globalStyles.color.white,
-        ...globalStyles.fontSize.md,
-    },
-    credText: {
-        ...globalStyles.fontSize.md,
-        color: globalStyles.color.gray500,
-        marginLeft: globalStyles.gap.sm,
-    },
-    credContainer: {
-        display: 'flex',
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-});
 
 export default TypePage;
