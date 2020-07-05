@@ -82,6 +82,8 @@ target 'writetoforget' do
 
   pod 'RNSound', :path => '../node_modules/react-native-sound'
 
+  pod 'RNRate', :path => '../node_modules/react-native-rate'
+
   target 'writetoforgetTests' do
     inherit! :complete
     # Pods for testing
