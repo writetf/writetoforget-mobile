@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, StatusBar} from 'react-native';
 import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
 import AsyncStorage from '@react-native-community/async-storage';
-import InAppBilling from 'react-native-billing';
+import CryptoJS from 'react-native-crypto-js';
 
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
@@ -82,7 +82,7 @@ function TypePage({
             {
                 (contentToForget.length > 10) && <Button
                 onPress={async () => {
-                    sendForgetToServer(contentToForget);
+                    sendForgetToServer(CryptoJS.MD5(contentToForget).toString());
                     setPostNumber(postNumber + 1);
                     AsyncStorage.setItem('@storage_post_number', (postNumber + 1).toString());
                     const postsStorage = await AsyncStorage.getItem('@storage_posts');
