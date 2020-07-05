@@ -5131,6 +5131,11 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.8.1, react-is@^16.8.4, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-billing@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-billing/-/react-native-billing-3.0.0.tgz#746d51f7c0e32dfa6888a13b58a32eccedee4460"
+  integrity sha512-M4atiPpeQpp4CUBy6WWFJEvOiizBDOetGhLFs3oTljIzMeUjCke0dza+9V5j4xPEPmncP1uiNlWrYy2uYcbuEQ==
+
 react-native-device-info@^5.6.1:
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-5.6.1.tgz#3ae88d8659b7b64d204dbfc39f69126b769363d4"

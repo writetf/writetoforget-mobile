@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, StatusBar, Image } from 'react-native';
+import InAppBilling from 'react-native-billing';
 import { Text, Button } from '~/common/index';
 import globalStyles, { deviceHeight } from '~/styles/globalStyle';
 import LogoImgSrc from '~/common/img/logo.png';
@@ -19,7 +20,40 @@ function renderBulletinPoint(content) {
     </View>;
 }
 
+const productId = 'one_month_subscription';
+
+const defaultState = {
+    productDetails: null,
+    transactionDetails: null,
+    consumed: false,
+    error: null,
+  };
+
 function StatefulWtf({navigation}) {
+    const [billingState, setBillingState] = useState(defaultState);
+    const getSubscriptionDetails = async () => {
+        try {
+          await InAppBilling.open();
+          const details = await InAppBilling.subscribe(
+            productId
+          );
+          await InAppBilling.close();
+          console.log(JSON.stringify(details));
+          setBillingState({
+              ...billingState,
+              productDetails: JSON.stringify(details),
+            });
+        } catch (err) {
+            console.log(productId);
+            console.log(err);
+            setBillingState({
+                ...defaultState,
+                error: JSON.stringify(err),
+            });
+            await InAppBilling.close();
+        }
+      };
+
     return (
     <View
         flex={1}
@@ -70,7 +104,9 @@ function StatefulWtf({navigation}) {
                 Subscription
             </Text>
             <View style={styles.pricingContainer}>
-                <Button onPress={() => navigation.navigate('Trash')} width={147} height={40}>
+                <Button onPress={() => {
+                    getSubscriptionDetails();
+                }} width={147} height={40}>
                     <Text
                         style={styles.pricingText}
                     >
