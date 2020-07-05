@@ -85,6 +85,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column-reverse',
     },
+    noPostText: {
+
+    },
     postContainer: {
         marginBottom: globalStyles.gap.md,
         marginLeft: globalStyles.gap.sm,

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, StatusBar, Image } from 'react-native';
 import InAppBilling from 'react-native-billing';
 import { Text, Button } from '~/common/index';
 import globalStyles, { deviceHeight } from '~/styles/globalStyle';
 import LogoImgSrc from '~/common/img/logo.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const perks = [
     'Remember what you have forgotten.',
@@ -28,20 +29,51 @@ const defaultState = {
     error: null,
   };
 
+const oneMonthSubscriptionProductId = 'one_month_subscription';
+const oneYearSubscriptionProductId = 'one_year_subscription';
+
 function StatefulWtf({navigation}) {
+
     const [billingState, setBillingState] = useState(defaultState);
+    const [prices, setPrices] = useState({
+        [oneMonthSubscriptionProductId]: '0',
+        [oneYearSubscriptionProductId]: '0',
+    });
+
+    useEffect(() => {
+        async function a() {
+            await InAppBilling.open();
+            InAppBilling.getSubscriptionDetailsArray([oneMonthSubscriptionProductId, oneYearSubscriptionProductId]).then(rs => {
+                console.log(rs[0].priceText);
+                setPrices({
+                    [oneMonthSubscriptionProductId]: rs[0].priceText,
+                    [oneYearSubscriptionProductId]: rs[1].priceText,
+                });
+            });
+            await InAppBilling.close();
+        }
+        a();
+    }, []);
+
+
     const buySubscription = async (productId) => {
         try {
-          await InAppBilling.open();
-          const details = await InAppBilling.subscribe(
-            productId
-          );
-          await InAppBilling.close();
-          console.log(JSON.stringify(details));
-          setBillingState({
-              ...billingState,
-              productDetails: JSON.stringify(details),
-            });
+            await InAppBilling.open();
+            console.log('bang', await InAppBilling.isSubscribed(productId));
+            const details = await InAppBilling.subscribe(
+                productId
+            );
+            await InAppBilling.close();
+            const {
+                purchaseTime,
+            } =  details;
+            console.log(details);
+            AsyncStorage.setItem(`@storage_${productId}`, purchaseTime);
+            setBillingState({
+                ...billingState,
+                productDetails: JSON.stringify(details),
+                });
+            navigation.navigate('Trash');
         } catch (err) {
             console.log(err);
             setBillingState({
@@ -104,23 +136,23 @@ function StatefulWtf({navigation}) {
                 </Text>
                 <View style={styles.pricingContainer}>
                     <Button onPress={() => {
-                        buySubscription('one_month_subscription');
+                        buySubscription(oneMonthSubscriptionProductId);
                     }} width={147} height={40}>
                         <Text
                             style={styles.pricingText}
                         >
-                            ₫ 19,000 / Month
+                            {prices[oneMonthSubscriptionProductId]} / Month
                         </Text>
                     </Button>
-                    <Button 
-                        onPress={() => buySubscription('one_year_subscription')} 
+                    <Button
+                        onPress={() => buySubscription(oneYearSubscriptionProductId)}
                         width={147} 
                         height={40}
                     >
                         <Text
                             style={styles.pricingText}
                         >
-                        ₫ 190,000 / Year
+                            {prices[oneYearSubscriptionProductId]} / Year
                         </Text>
                     </Button>
                 </View>

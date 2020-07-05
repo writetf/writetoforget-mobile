@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, StatusBar} from 'react-native';
 import { getUniqueId, getManufacturer, getPhoneNumber, getModel } from 'react-native-device-info';
 import AsyncStorage from '@react-native-community/async-storage';
-import InAppBilling from 'react-native-billing';
 
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
