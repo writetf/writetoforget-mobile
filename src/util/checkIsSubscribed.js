@@ -12,7 +12,12 @@ export default async function checkIsSubscribed() {
         await InAppBilling.open();
         const isMonthActivePlayStore = await InAppBilling.isSubscribed(oneMonthSubscriptionProductId);
         const isYearActivePlayStore = await InAppBilling.isSubscribed(oneYearSubscriptionProductId);
-        console.log(await InAppBilling.getSubscriptionTransactionDetails(oneMonthSubscriptionProductId));
+        InAppBilling.getSubscriptionTransactionDetails(oneMonthSubscriptionProductId).then(details => {
+            AsyncStorage.setItem(`@storage_${oneMonthSubscriptionProductId}`, details.purchaseTime);
+        });
+        InAppBilling.getSubscriptionTransactionDetails(oneYearSubscriptionProductId).then(details => {
+            AsyncStorage.setItem(`@storage_${oneYearSubscriptionProductId}`, details.purchaseTime);
+        });
         await InAppBilling.close();
         return isMonthActivePlayStore || isYearActivePlayStore;
     }
