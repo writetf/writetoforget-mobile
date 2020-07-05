@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import globalStyles from '~/styles/globalStyle';
+import globalStyles, {deviceHeight} from '~/styles/globalStyle';
 
 const styles = StyleSheet.create({
     appContainer: {
@@ -9,6 +9,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: globalStyles.color.white,
     },
+    modalLayout: {
+        position: 'absolute',
+        flex: 1,
+        height: deviceHeight,
+        backgroundColor: globalStyles.color.text,
+        opacity: 0.8,
+    },
+    modalContainer: (modalVisible) => ({
+        opacity: modalVisible ? 1 : 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        borderRadius: globalStyles.borderRadius,
+        height: deviceHeight / 3,
+        margin: globalStyles.gap.md,
+        padding: globalStyles.gap.lg,
+    }),
     headerContainer: {
         display: 'flex',
         flexDirection: 'row',

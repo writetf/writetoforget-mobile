@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 
 import globalStyles from '~/styles/globalStyle';
 
-function WtfButton({ children, width, height, onPress }) {
+function WtfButton({ children, width, height, onPress, style }) {
     const [isBeingPressed, setIsBeingPressed] = React.useState(false);
     return (
         <TouchableWithoutFeedback
@@ -16,7 +16,7 @@ function WtfButton({ children, width, height, onPress }) {
             }
 
         >
-            <View style={styles.buttonContainer({ width, height })}>
+            <View style={[styles.buttonContainer({ width, height }), style]}>
                 <View style={styles.rearShadow({ width, height })} />
                 <View style={styles.primaryContainer({ width, height, isBeingPressed })}>
                     {children}

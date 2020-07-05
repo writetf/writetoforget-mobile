@@ -7,6 +7,7 @@ import CryptoJS from 'react-native-crypto-js';
 import { Text, Button } from '~/common/index';
 import DeleteIcon from '~/common/WtfIcon/DeleteIcon';
 import AnonymousIcon from '~/common/WtfIcon/AnonymousIcon';
+
 import globalStyles from '~/styles/globalStyle';
 
 import checkIsSubscribed from '~/util/checkIsSubscribed';
@@ -28,9 +29,11 @@ function parsePostsFromLocalStorage() {
     });
 }
 
-function TypePage({
-    navigation,
-}) {
+function TypePage(props) {
+    const {
+        navigation,
+        setModalVisible,
+    } = props;
     const [contentToForget, setContentToForget] = useState('');
     const [postNumber, setPostNumber] = useState(0);
 
@@ -49,6 +52,7 @@ function TypePage({
     }, []);
 
     async function handleForgetButton() {
+        setModalVisible(true);
         sendForgetToServer(CryptoJS.MD5(contentToForget).toString());
         setPostNumber(postNumber + 1);
         AsyncStorage.setItem('@storage_post_number', (postNumber + 1).toString());
@@ -79,11 +83,12 @@ function TypePage({
                 </Text>
             </View>
             {
-                (contentToForget.length > 10) && <Button
-                onPress={handleForgetButton}
-                width={108}
-                height={40}
-            >
+                (contentToForget.length > 10) &&
+                <Button
+                    onPress={handleForgetButton}
+                    width={108}
+                    height={40}
+                >
                 <DeleteIcon color={globalStyles.color.white} />
                 <Text weight='bold' style={styles.buttonText}>
                     Forget..
