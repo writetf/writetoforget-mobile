@@ -39,7 +39,7 @@ function TrashThought({
                 </View>
                 <Logo onPress={() => navigation.navigate('Type')}/>
             </View>
-            <ScrollView contentContainerStyle={styles.listContainer} flex={1}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.listContainer} flex={1}>
                 <StatusBar
                     barStyle='dark-content'
                     backgroundColor={globalStyles.color.white}
