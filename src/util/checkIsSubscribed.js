@@ -22,8 +22,6 @@ export default async function checkIsSubscribed() {
         return isMonthActivePlayStore || isYearActivePlayStore;
     }
     const oneMonthPurchase = await AsyncStorage.getItem(`@storage_${oneMonthSubscriptionProductId}`);
-    const isMonthActiveOffline = moment(oneMonthPurchase).isAfter(moment().subtract(1, 'minute'));
     const oneYearPurchase = await AsyncStorage.getItem(`@storage_${oneYearSubscriptionProductId}`);
-    const isYearActiveOffline = moment(oneYearPurchase).isAfter(moment().subtract(30, 'minute'));
-    return isMonthActiveOffline || isYearActiveOffline;
+    return oneMonthPurchase || oneYearPurchase;
 }
