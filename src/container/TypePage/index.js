@@ -44,13 +44,56 @@ function TypePage(props) {
 
     useFocusEffect(
         React.useCallback(() => {
-          const onBackPress = () => {
+            function renderRatingModal() {
+                return (
+                    <View style={styles.ratingModalContainer}>
+                        <Text style={styles.rateModalText}>
+                            Would you like to rate our app?
+                        </Text>
+                        <View style={styles.ratingModalFooter}>
+                            <TouchableWithoutFeedback
+                                onPress={() => {
+                                    BackHandler.exitApp();
+                                }}
+                            >
+                                <View>
+                                    <Text weight='medium' style={styles.exitRatingText}>
+                                        Exit
+                                    </Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <Button
+                                onPress={() => {
+                                    const options = {
+                                        GooglePackageName:'com.writetf.writetoforget',
+                                        preferredAndroidMarket: AndroidMarket.Google,
+                                        preferInApp:false,
+                                        openAppStoreIfInAppFails:true,
+                                        fallbackPlatformURL: 'https://play.google.com/store/apps/details?id=com.writetf.writetoforget',
+                                    };
+                                    Rate.rate(options);
+                                    setModal({
+                                        isVisible: false,
+                                    });
+                                }}
+                                style={styles.modalButton}
+                                width={81}
+                                height={40}
+                            >
+                                <Text style={styles.ratingtModalButtonText} weight='bold'>
+                                    Rate
+                                </Text>
+                            </Button>
+                        </View>
+                    </View>);
+            }
+            const onBackPress = () => {
                 setModal({
                     isVisible: true,
                     modalContent: renderRatingModal(),
                 });
                 return true;
-          };
+            };
           BackHandler.addEventListener('hardwareBackPress', onBackPress);
           return () =>
             BackHandler.removeEventListener('hardwareBackPress', onBackPress);
@@ -68,52 +111,6 @@ function TypePage(props) {
 
         parsePostsFromLocalStorage().then();
     }, []);
-
-    function renderRatingModal() {
-        return (
-            <View style={styles.ratingModalContainer}>
-                <Text style={styles.rateModalText}>
-                    Would you like to rate our app?
-                </Text>
-                <View style={styles.ratingModalFooter}>
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            BackHandler.exitApp();
-                        }}
-                    >
-                        <View>
-                            <Text weight='medium' style={styles.exitRatingText}>
-                                Exit
-                            </Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <Button
-                        onPress={() => {
-                            const options = {
-                                GooglePackageName:'com.writetf.writetoforget',
-                                preferredAndroidMarket: AndroidMarket.Google,
-                                preferInApp:false,
-                                openAppStoreIfInAppFails:true,
-                                fallbackPlatformURL: 'https://play.google.com/store/apps/details?id=com.writetf.writetoforget',
-                            };
-                            Rate.rate(options);
-                            setModal({
-                                isVisible: false,
-                            });
-
-                        }}
-                        style={styles.modalButton}
-                        width={81}
-                        height={40}
-                    >
-                        <Text style={styles.ratingtModalButtonText} weight='bold'>
-                            Rate
-                        </Text>
-                    </Button>
-
-                </View>
-            </View>);
-    }
 
     function renderForgetModal() {
         return (
