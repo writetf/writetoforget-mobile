@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, BackHandler} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Rate, { AndroidMarket } from 'react-native-rate';
 import SplashScreen from 'react-native-splash-screen';
 import TypePage from '~/container/TypePage/index';
 import StatefulWtf from '~/container/StatefulWtf';
@@ -18,24 +17,12 @@ const {
 } = MainStack;
 
 function App() {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modal, setModal] = useState({
+        isVisible: false,
+        modalContent: null,
+    });
     useEffect(() => {
         SplashScreen.hide();
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                const options = {
-                    GooglePackageName:'com.writetf.writetoforget',
-                    preferredAndroidMarket: AndroidMarket.Google,
-                    preferInApp:false,
-                    openAppStoreIfInAppFails:true,
-                    fallbackPlatformURL: 'https://play.google.com/store/apps/details?id=com.writetf.writetoforget',
-                };
-                Rate.rate(options);
-            }
-          );
-
-        return () => backHandler.remove();
     }, []);
 
     return (
@@ -47,7 +34,7 @@ function App() {
                         options={{ header: () => null }}
                     >
                     {
-                        props => (<TypePage {...props} setModalVisible={setModalVisible}/>)
+                        props => (<TypePage {...props} setModal={setModal}/>)
                     }
 
                     </Screen>
@@ -63,7 +50,7 @@ function App() {
                     />
                 </Navigator>
             </NavigationContainer>
-            <Modal setModalVisible={setModalVisible} isVisible={modalVisible} />
+            <Modal setModalVisible={setModal} modal={modal} />
         </SafeAreaView>
     );
 }
