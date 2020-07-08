@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
 import SoundWaveIcon from '~/common/WtfIcon/SoundWaveIcon';
 import PauseIcon  from '~/common/WtfIcon/PauseIcon';
 import PlayIcon from '~/common/WtfIcon/PlayIcon';
@@ -14,6 +14,22 @@ function AudioPlayer() {
     const [playing, setPlaying] = useState(true);
     const [playback, setPlayback] = useState(null);
     const playerColor = playing ? globalStyles.color.darkPurple : globalStyles.color.gray500;
+    const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+
+    React.useEffect(() => {
+        function recursive() {
+            fadeAnim.setValue(0);
+            Animated.timing(
+                fadeAnim,
+                {
+                    toValue: 1,
+                    duration: 5000,
+                    useNativeDriver: true,
+                }
+                ).start(() => recursive());
+        }
+        recursive();
+    }, []);
 
     useEffect(() => {
         const backgroundMusic = new Sound('background_music.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -46,6 +62,7 @@ function AudioPlayer() {
                     playback.pause();
                 } else {
                     setPlaying(true);
+                    fadeAnim.setValue(0);
                     playback.play();
                 }
             }}
@@ -58,10 +75,29 @@ function AudioPlayer() {
                         color={playerColor}
                     />
                 }
+                <View
+                    style={{
+                        overflow: 'hidden',
+                    }}
+                >
+                    <Animated.View
+                        style={{
+                            transform: [
+                                {translateX: playing ? fadeAnim.interpolate({
+                                        inputRange: [0, 0.5, 1],
+                                        outputRange: [-50, 50, -50],
+                                }) : 0},
+                            ],
+                            // opacity: fadeAnim,         // Bind opacity to animated value
+                        }}
+                    >
+                        <Text style={styles.trackText(playerColor)}>
+                            Kiss the rain..
+                        </Text>
+                    </Animated.View>
+                </View>
 
-                <Text style={styles.trackText(playerColor)}>
-                    Kiss the rain..
-                </Text>
+
                 <SoundWaveIcon
                     color={playerColor}
                 />
